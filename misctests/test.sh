@@ -20,8 +20,8 @@ test() {
     fi
 }
 
-test ./misctests/ternary.tcl 1
 test ./misctests/test.tcl
+test ./misctests/expr.tcl
 
 if [[ $FAIL == 0 ]]; then
     echo "All tests passed"

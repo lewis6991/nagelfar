@@ -1233,18 +1233,21 @@ proc parseExpr {str index knownVarsName} {
         set len [string length $str]
         set escape 0
         set brace 0
+        set doublquote 0
         for {set i 0} {$i < $len} {incr i} {
             set c [string index $str $i]
             if {$c eq "\\"} {
                 set escape [expr {!$escape}]
             } elseif {!$escape} {
-                if {$c eq "\{"} {
+                if {$c eq "\""} {
+                    set doublquote [expr {!$doublquote}]
+                } elseif {$c eq "\{"} {
                     incr brace
                 } elseif {$c eq "\}"} {
                     if {$brace > 0} {
                         incr brace -1
                     }
-                } elseif {$brace == 0} {
+                } elseif {$brace == 0 || $doublquote} {
                     if {$c eq "\$"} {
                         incr i
                         parseVar $str $len $index i knownVars
