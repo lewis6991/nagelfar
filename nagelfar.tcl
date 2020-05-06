@@ -2296,8 +2296,8 @@ proc lookForCommand {cmd ns index} {
         # Fully qualified, so only one possible
         set cmds [list [string range $cmd 2 end]]
     } elseif {$ns ne "__unknown__" } {
-        # Look through all levels of namespaces
-        set nsSearchPath {}
+        # Look through all levels of namespaces (including global)
+        set nsSearchPath {::}
         set nsPrefix $ns
         while {$nsPrefix ne ""} {
             lappend nsSearchPath $nsPrefix
@@ -2308,10 +2308,10 @@ proc lookForCommand {cmd ns index} {
         }
         foreach nsPrefix $nsSearchPath {
             set cmd1 "${nsPrefix}::$cmd"
-            if {[string match "::*" $cmd1]} {
-                set cmd1 [string range $cmd1 2 end]
-            }
             lappend cmds $cmd1
+            if {[string match "::*" $cmd1]} {
+                lappend cmds [string range $cmd1 2 end]
+            }
         }
         lappend cmds $cmd
     } else {

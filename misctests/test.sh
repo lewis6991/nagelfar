@@ -20,8 +20,9 @@ test() {
     fi
 }
 
-test ./misctests/test.tcl
-test ./misctests/expr.tcl
+for i in ./misctests/*.tcl; do
+    test "$i"
+done
 
 if [[ $FAIL == 0 ]]; then
     echo "All tests passed"
