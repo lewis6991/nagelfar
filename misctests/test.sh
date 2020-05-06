@@ -1,5 +1,30 @@
 #! /usr/bin/env bash
 
-set -e
+FAIL=0
 
-diff <(./nagelfar.tcl ./misctests/test.tcl) ./misctests/test.out
+test() {
+    test=$1
+    xfail=${2-0}
+    echo -n "Running: $test: "
+    out=$(diff <(./nagelfar.tcl "$test") <(grep '^\s*###' "$test" | sed 's/^\s*### \?//g'))
+    if [[ $out ]]; then
+        if [[ $xfail == 1 ]]; then
+            echo "expected fail"
+        else
+            echo "failed"
+            echo "$out"
+            FAIL=1
+        fi
+    else
+        echo "passed"
+    fi
+}
+
+test ./misctests/ternary.tcl 1
+test ./misctests/test.tcl
+
+if [[ $FAIL == 0 ]]; then
+    echo "All tests passed"
+else
+    echo "At least 1 test failed"
+fi
