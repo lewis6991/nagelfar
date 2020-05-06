@@ -53,7 +53,7 @@ unset tmplink
 set dbDir      $thisDir
 set docDir     $thisDir/doc
 set libDir     $thisDir/lib
- 
+
 # Search where the script is, to be able to place e.g. ctext there.
 if {[info exists ::starkit::topdir]} {
     lappend auto_path [file dirname [file normalize $::starkit::topdir]]
@@ -229,11 +229,11 @@ proc errorMsg {severity msg i {notAllowedinFirst 0}} {
     set line [calcLineNo $i]
     set pre [errorMsgLinePrefix $line "$severity "]
     if {$::Prefs(html)} {
-	switch $severity {
-	    E { set color "#DD0000"; set severityMsg "ERROR" }
-	    W { set color "#FFAA00"; set severityMsg "WARNING" }
-	    N { set color "#66BB00"; set severityMsg "NOTICE" }
-	}
+        switch $severity {
+            E { set color "#DD0000"; set severityMsg "ERROR" }
+            W { set color "#FFAA00"; set severityMsg "WARNING" }
+            N { set color "#66BB00"; set severityMsg "NOTICE" }
+        }
         set htmlPre "<a href=#$::Prefs(htmlprefix)$line>Line [format %3d $line]</a>: <font color=$color><strong>$severityMsg</strong></font>: "
         set ::Nagelfar(currentHtmlMessage) $htmlPre$htmlMsg
     }
@@ -275,26 +275,26 @@ proc flushMsg {} {
     set msgs [lsort -integer -index 0 $::Nagelfar(messages)]
 
     foreach msg $msgs {
-	set line [lindex $msg 0]
+        set line [lindex $msg 0]
         set text [lindex $msg 1]
         set print 1
         foreach filter $::Nagelfar(filter) {
-	    lassign $filter pat start_line end_line
-	    if {$start_line > 0} {
-		# line specific filter
-		if {$line >= $start_line && $line <= $end_line} {
-		    set final_pat [errorMsgLinePrefix $line $pat]
-		    if {[string match $final_pat $text]} {
-			set print 0
-		    }
-		}
-	    } else {
-		# general filter
-		if {[string match $pat $text]} {
-		    set print 0
-		    break
-		}
-	    }
+            lassign $filter pat start_line end_line
+            if {$start_line > 0} {
+                # line specific filter
+                if {$line >= $start_line && $line <= $end_line} {
+                    set final_pat [errorMsgLinePrefix $line $pat]
+                    if {[string match $final_pat $text]} {
+                        set print 0
+                    }
+                }
+            } else {
+                # general filter
+                if {[string match $pat $text]} {
+                    set print 0
+                    break
+                }
+            }
         }
         if {$print} {
             incr ::Nagelfar(messageCnt)
@@ -1064,7 +1064,7 @@ proc parseVar {str len index iName knownVarsName} {
     }
     setVarUsed knownVars $var
     if {$vararr} {
-	setVarUsed knownVars $var\($varindex\)
+        setVarUsed knownVars $var\($varindex\)
     }
 
     if {[string match ::* $var]} {
@@ -1774,16 +1774,16 @@ proc checkCommand {cmd index argv wordstatus wordtype indices \
                     incr i 2
                     set synConstr [parseProc $procArgV $indicesV 0 0 $cmd]
                     set ::syntax($constructorCmd) $synConstr
-		    # tcl::oo also knows the create constructor with a name
-		    # for the new object:
+                    # tcl::oo also knows the create constructor with a name
+                    # for the new object:
                     set constructorCmd "[currentObjectOrig] create"
                     unset -nocomplain ::syntax($constructorCmd)
-		    set objtype "_obj,[currentObjectOrig]"
-		    if {[string is integer $synConstr]} {
-			set synConstr "dc=$objtype [string repeat "x " $synConstr]"
-		    } else {
-			set synConstr "dc=$objtype $synConstr"
-		    }
+                    set objtype "_obj,[currentObjectOrig]"
+                    if {[string is integer $synConstr]} {
+                        set synConstr "dc=$objtype [string repeat "x " $synConstr]"
+                    } else {
+                        set synConstr "dc=$objtype $synConstr"
+                    }
                     set ::syntax($constructorCmd) $synConstr
                 } else {
                     set procArgV [lrange $argv $i $iplus2]
@@ -1860,7 +1860,7 @@ proc checkCommand {cmd index argv wordstatus wordtype indices \
                         }
                         addImplicitVariablesNs $cmd [lindex $indices $i] locCtxVars
                         parseBody $body [lindex $indices $i] locCtxVars
-			checkForUnusedVar locCtxVars [lindex $indices $i]
+                        checkForUnusedVar locCtxVars [lindex $indices $i]
                     } else {
                         parseBody $body [lindex $indices $i] knownVars
                     }
@@ -1899,7 +1899,7 @@ proc checkCommand {cmd index argv wordstatus wordtype indices \
                     # Check in local context
                     #puts "Cmd '$cmd' NS '[currentNamespace]'"
                     parseBody $body [lindex $indices $i] locCtxVars
-		    checkForUnusedVar locCtxVars [lindex $indices $i]
+                    checkForUnusedVar locCtxVars [lindex $indices $i]
                 }
                 incr i
             }
@@ -1974,7 +1974,7 @@ proc checkCommand {cmd index argv wordstatus wordtype indices \
                         if {$::Nagelfar(pluginVarRead)} {
                             pluginHandleVarRead var knownVars $index
                         }
-			setVarUsed knownVars $var
+                        setVarUsed knownVars $var
                         if {[string match ::* $var]} {
                             # Skip qualified names until we handle
                             # namespace better. FIXA
@@ -2009,15 +2009,15 @@ proc checkCommand {cmd index argv wordstatus wordtype indices \
                                 [lindex $wordstatus $i] [lindex $wordtype $i] 0 \
                                 [lindex $indices $i] $isArray knownVars ""
 
-			# not strictly speaking used but info exists etc
-			# may cause a lot of false-positive without this
-			set var [lindex $argv $i]
-			set varBase [lindex [split [lindex $argv $i] "("] 0]
-			setVarUsed knownVars $varBase
-			if {$var ne $varBase} {
-			    setVarUsed knownVars $var
-			}
-		    }
+                        # not strictly speaking used but info exists etc
+                        # may cause a lot of false-positive without this
+                        set var [lindex $argv $i]
+                        set varBase [lindex [split [lindex $argv $i] "("] 0]
+                        setVarUsed knownVars $varBase
+                        if {$var ne $varBase} {
+                            setVarUsed knownVars $var
+                        }
+                    }
 
                     lappend constantsDontCheck $i
                     incr i
@@ -2228,7 +2228,7 @@ proc markVariable {var ws wordtype check index isArray knownVarsName typeName} {
             }
             if {$check == 1} {
                 dict set knownVars $var set 1
-		setVarUsed knownVars $var
+                setVarUsed knownVars $var
             }
         }
     }
@@ -2251,27 +2251,27 @@ proc checkForUnusedVar {knownVarsName {idx 0}} {
     upvar $knownVarsName knownVars
 
     if {$::Nagelfar(firstpass)} {
-	return
+        return
     }
     if {$::Prefs(noVar) || !$::Prefs(warnUnusedVar)} {
-	return
+        return
     }
 
     dict for {var info} $knownVars {
-	# ignore qualified names and everything starting with "_"
-	if {$var eq "" || [string first "::" $var] >= 0 || [string index $var 0] eq "_"} {
-	    continue
-	}
-	if {$var in $::Prefs(warnUnusedVarFilter)} {
-	    continue
-	}
-	if {![dict exists $info used]} {
-	    continue
-	}
-	set val [dict get $info used]
-	if {$val == 0 || ($val == -1 && ![dict get $info set])} {
+        # ignore qualified names and everything starting with "_"
+        if {$var eq "" || [string first "::" $var] >= 0 || [string index $var 0] eq "_"} {
+            continue
+        }
+        if {$var in $::Prefs(warnUnusedVarFilter)} {
+            continue
+        }
+        if {![dict exists $info used]} {
+            continue
+        }
+        set val [dict get $info used]
+        if {$val == 0 || ($val == -1 && ![dict get $info set])} {
             errorMsg W "Variable \"$var\" is never read" $idx
-	}
+        }
     }
 }
 
@@ -2365,7 +2365,7 @@ proc checkSpecial {cmd index argv wordstatus wordtype indices expandWords} {
             foreach var $argv ws $wordstatus {
                 if {$ws & 1} {
                     knownVar knownVars $var
-		    setVarUsed knownVars $var -1
+                    setVarUsed knownVars $var -1
                 } else {
                     errorMsg N "Non constant argument to $cmd: $var" $index
                 }
@@ -2405,8 +2405,8 @@ proc checkSpecial {cmd index argv wordstatus wordtype indices expandWords} {
                             # FIXA: What if it is an array element?
                             # Should the array be marked?
                         } else {
-			    setVarUsed knownVars $var -1
-			}
+                            setVarUsed knownVars $var -1
+                        }
                         lappend constantsDontCheck $i
                     } else {
                         errorMsg N "Non constant argument to $cmd: $var" \
@@ -3920,7 +3920,7 @@ proc parseProc {argv indices isProc isMethod definingCmd} {
             dict set knownVars $var $i
         }
     }
-    
+
 #    decho "Note: parsing procedure $name"
     if {!$::Nagelfar(firstpass)} {
         if {$isProc} {
@@ -5117,7 +5117,7 @@ proc exitApp {} {
 # Browse for and add a syntax database file
 proc addDbFile {} {
     if {[info exists ::Nagelfar(lastdbdir)]} {
-        set initdir $::Nagelfar(lastdbdir) 
+        set initdir $::Nagelfar(lastdbdir)
     } elseif {[info exists ::Nagelfar(lastdir)]} {
         set initdir $::Nagelfar(lastdir)
     } else {
@@ -5161,11 +5161,11 @@ proc addFile {} {
     if {[info exists ::Nagelfar(lastdir)]} {
         set initdir $::Nagelfar(lastdir)
     } elseif {[info exists ::Nagelfar(lastdbdir)]} {
-        set initdir $::Nagelfar(lastdbdir) 
+        set initdir $::Nagelfar(lastdbdir)
     } else {
         set initdir [pwd]
     }
-    
+
     set filetypes [list {{Tcl Files} {.tcl}} \
             [list {All Tcl Files} $::Prefs(extensions)] \
             {{All Files} {*}}]
@@ -5220,7 +5220,7 @@ proc moveFile {dir} {
     set item [lindex $::Nagelfar(files) $ix]
     set ::Nagelfar(files) [lreplace $::Nagelfar(files) $ix $ix]
     set ::Nagelfar(files) [linsert $::Nagelfar(files) $nix $item]
-    $::Nagelfar(fileWin) see $nix 
+    $::Nagelfar(fileWin) see $nix
     $::Nagelfar(fileWin) selection clear 0 end
     $::Nagelfar(fileWin) selection set $nix
     $::Nagelfar(fileWin) selection anchor $nix
@@ -5757,11 +5757,11 @@ proc editFile {filename lineNo} {
         toplevel .fv
         wm title .fv "Nagelfar Editor"
 
-	if {$::Nagelfar(withCtext)} {
-	    set w [Scroll both ctext .fv.t -linemap 0 \
+        if {$::Nagelfar(withCtext)} {
+            set w [Scroll both ctext .fv.t -linemap 0 \
                     -width 80 -height 25 -font $::Prefs(editFileFont)]
-	    ctext::setHighlightTcl $w
-	} else {
+            ctext::setHighlightTcl $w
+        } else {
             set w [Scroll both text .fv.t \
                     -width 80 -height 25 -font $::Prefs(editFileFont)]
         }
@@ -5870,9 +5870,9 @@ proc editFile {filename lineNo} {
         set ch [open $filename r]
         set data [read $ch]
         close $ch
-	if {$::Nagelfar(withCtext)} {
-	    $w fastinsert end $data
-	} else {
+        if {$::Nagelfar(withCtext)} {
+            $w fastinsert end $data
+        } else {
             $w insert end $data
         }
     }
@@ -6336,8 +6336,8 @@ proc getOptions {} {
         prefixFile 0
         forceElse 1
         noVar 0
-	warnUnusedVar 0
-	warnUnusedVarFilter {args}
+        warnUnusedVar 0
+        warnUnusedVarFilter {args}
         severity N
         editFileBackup 1
         editFileFont {Courier 10}
@@ -6372,14 +6372,14 @@ proc addOptionsMenu {m} {
     $m.mo add cascade -label "Result Window Font" -menu $m.mo.mo
     menu $m.mo.mo
     $m.mo.mo add radiobutton -label "Small" \
-	    -variable ::Prefs(resultFont) -value "Courier 8" \
-	    -command {font configure ResultFont -size 8}
+            -variable ::Prefs(resultFont) -value "Courier 8" \
+            -command {font configure ResultFont -size 8}
     $m.mo.mo add radiobutton -label "Medium" \
-	    -variable ::Prefs(resultFont) -value "Courier 10" \
-	    -command {font configure ResultFont -size 10}
+            -variable ::Prefs(resultFont) -value "Courier 10" \
+            -command {font configure ResultFont -size 10}
     $m.mo.mo add radiobutton -label "Large" \
-	    -variable ::Prefs(resultFont) -value "Courier 14" \
-	    -command {font configure ResultFont -size 14}
+            -variable ::Prefs(resultFont) -value "Courier 14" \
+            -command {font configure ResultFont -size 14}
 
     $m.mo add cascade -label "Editor" -menu $m.mo.med
     menu $m.mo.med
@@ -6733,8 +6733,8 @@ proc pluginHandleLateExpr {expName knownVarsName index} {
         # A replacement expression must not have commands in it
         if {$exp ne $outdata} {
             # It has been replaced
-	    # a '[' is forbidden but an '\[' is ok
-	    if {![regexp {^\[|[^\\]\[} $outdata]} {
+            # a '[' is forbidden but an '\[' is ok
+            if {![regexp {^\[|[^\\]\[} $outdata]} {
                 set exp $outdata
             } else {
                 errorMsg E "Plugin $::Nagelfar(pluginNames,$pi) returned malformed replacement from lateExpr" $index
@@ -6816,7 +6816,7 @@ proc usage {} {
  -WsubN            : Sets subcommand warning level to N.
    1 (def)         = Warn about shortened subcommands.
  -WelseN           : Enforce else keyword. Default 1.
- -Wunusedvar	   : Check for unused variables.
+ -Wunusedvar           : Check for unused variables.
  -WunusedvarFilter : List of names to ignore for unused check.
  -strictappend     : Enforce having an initialised variable in (l)append.
  -tab <size>       : Tab size, default is 8.
@@ -7120,14 +7120,14 @@ if {![info exists gurka]} {
             -novar {
                 set ::Prefs(noVar) 1
             }
-	    -Wunusedvar {
+            -Wunusedvar {
                 set ::Prefs(warnUnusedVar) 1
-	    }
-	    -WunusedvarFilter {
-		incr i
+            }
+            -WunusedvarFilter {
+                incr i
                 set arg [lindex $argv $i]
                 lappend ::Prefs(warnUnusedVarFilter) $arg
-	    }
+            }
             -dbpicky { # A debug thing to help make a more complete database
                 set ::Nagelfar(dbpicky) 1
             }

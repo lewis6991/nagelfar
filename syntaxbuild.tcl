@@ -79,7 +79,7 @@ proc getSubCmds {args} {
         }
         #puts "  $result"
         return $result
-    }        
+    }
 
     lappend regexps {option .* must be (.*)$}
     lappend regexps {option .* should be one of (.*)$}
@@ -88,10 +88,10 @@ proc getSubCmds {args} {
     lappend regexps {: should be (.*)$}
 
     foreach re $regexps {
-	if {[regexp $re $err -> apa]} {
-	    regsub -all {( or )|(, or )|(, )} $apa " " apa
-	    return [lsort -dictionary [lrange $apa 0 end]]
-	}
+        if {[regexp $re $err -> apa]} {
+            regsub -all {( or )|(, or )|(, )} $apa " " apa
+            return [lsort -dictionary [lrange $apa 0 end]]
+        }
     }
     #puts "Error '$err' from '$args'"
     return {}
@@ -109,7 +109,7 @@ proc createSyntax {procName} {
     }
     set i 1
     foreach a $args {
-	if {$a != "args"} {
+        if {$a != "args"} {
             if {![info default $procName $a dummy]} {
                 set min $i
             }
@@ -214,7 +214,7 @@ proc buildDb {ch} {
     # The local variable in the proc is marked with this type.
     # Any modifier goes after the parens.
     # E.g.   x(varName)   x(script)?
-    
+
     # If a token is followed by a number it is token dependent.
     # Any modifier goes after the number.
     # E.g.   c2   cg4?
@@ -440,7 +440,7 @@ proc buildDb {ch} {
         set syntax(dict\ values)  "x x?"
         set syntax(dict\ update)  "l x n x&n* c"
         set syntax(dict\ with)    "l x* c"
-        
+
         # Initialising incr
         set syntax(incr)       "n x?"
         set syntax(lassign)    "x n n*"
@@ -549,7 +549,7 @@ proc buildDb {ch} {
         set syntax(oo::class\ create) "do=_stdclass_oo cn?"
         set syntax(oo::class\ create::constructor) dk ;# Define constructor
         set syntax(oo::class\ create::superclass)  di ;# Define inheritance
-        set syntax(oo::class\ create::method) "dm"    ;# Define method 
+        set syntax(oo::class\ create::method) "dm"    ;# Define method
         set syntax(oo::class\ create::destructor) dd  ;# Define destructor
         set syntax(oo::class\ create::variable) div*
         set syntax(oo::class\ create::export) x
@@ -692,7 +692,7 @@ proc buildDb {ch} {
         set syntax(tk)       "s x*"
         set syntax(tkwait)   "s x"
         set syntax(tkwait\ variable) "l" ;# Global variable?
-	set syntax(winfo)    "s x x*"
+        set syntax(winfo)    "s x x*"
         set syntax(wm)       "s x x*"
 
         set syntax(tk_chooseColor)     "p*"
@@ -1044,11 +1044,11 @@ proc buildFile {filename} {
 
 if {[info exists tcl_interactive] && !$tcl_interactive} {
     if {$argc == 0 && $tcl_platform(platform) == "windows"} {
-	set argc 1
-	set argv [list syntaxdb.tcl]
+        set argc 1
+        set argv [list syntaxdb.tcl]
     }
     if {$argc == 0} {
-	buildDb stdout
+        buildDb stdout
     } else {
         buildFile [lindex $argv 0]
     }
